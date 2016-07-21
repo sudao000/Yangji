@@ -5,7 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="tab_text_normal">#696969</color>
     <color name="tab_text_selected">#73bf40</color>
-    <color name="biaoti">#1e9ea2</color>
+    <color name="biaoti">#12cc2b</color>
     <color name="bt_backgroung">#d00c6b83</color>
     <color name="text_cc">#338f14</color>
+    <color name="titleBlue">#283fbf</color>
+    <color name="white">#f1f1f2</color>
+    <color name="yellow">#e6e60f</color>
 </resources>

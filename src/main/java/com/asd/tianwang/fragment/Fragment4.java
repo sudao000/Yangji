@@ -15,7 +15,7 @@ import com.asd.tianwang.depend.BaseFragment;
 public class Fragment4 extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login, null, false);
+        View view = inflater.inflate(R.layout.fram4, null, false);
         return view;
     }
 }

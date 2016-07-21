@@ -14,12 +14,7 @@ import com.asd.tianwang.R;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-/**
- * User: Geek_Soledad(msdx.android@qq.com)
- * Date: 2014-08-27
- * Time: 09:20
- * FIXME
- */
+
 public class IconTabPageIndicator extends LinearLayout implements PageIndicator {
     /**
      * Title text used when no title is provided by the adapter.

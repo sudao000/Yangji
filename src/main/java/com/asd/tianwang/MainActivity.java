@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
         initViews();
 
 
+
     }
     private void initViews() {
         mViewPager = (StaticViewPager) findViewById(R.id.view_pager);
@@ -45,23 +46,23 @@ public class MainActivity extends Activity {
         List<BaseFragment> fragments = new ArrayList<BaseFragment>();
 
         Fragment1 userFragment = new Fragment1();
-        userFragment.setTitle("收入");
-        userFragment.setIconId(R.drawable.tab_in);
+        userFragment.setTitle("运行状态");
+        userFragment.setIconId(R.drawable.tab_run);
         fragments.add(userFragment);
 
         Fragment2 noteFragment = new Fragment2();
-        noteFragment.setTitle("支出");
-        noteFragment.setIconId(R.drawable.tab_out);
+        noteFragment.setTitle("数据记录");
+        noteFragment.setIconId(R.drawable.tab_data);
         fragments.add(noteFragment);
 
         Fragment3 contactFragment = new Fragment3();
-        contactFragment.setTitle("便签");
-        contactFragment.setIconId(R.drawable.tab_flag);
+        contactFragment.setTitle("参数设置");
+        contactFragment.setIconId(R.drawable.tab_setting);
         fragments.add(contactFragment);
 
         Fragment4 recordFragment = new Fragment4();
-        recordFragment.setTitle("设置");
-        recordFragment.setIconId(R.drawable.tab_setting);
+        recordFragment.setTitle("菜单");
+        recordFragment.setIconId(R.drawable.tab_menu);
         fragments.add(recordFragment);
 
         return fragments;
