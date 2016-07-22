@@ -60,13 +60,13 @@ public class HistoryDao {
      *
      * @return
      */
-    public long getCount() {
+    public int getCount() {
         db = helper.getWritableDatabase();// 初始化SQLiteDatabase对象
         Cursor cursor = db
-                .rawQuery("select count(_id) from history", null);// 获取收入信息的记录数
+                .rawQuery("select count(id) from history", null);// 获取收入信息的记录数
         if (cursor.moveToNext())// 判断Cursor中是否有数据
         {
-            return cursor.getLong(0);// 返回总记录数
+            return cursor.getInt(0);// 返回总记录数
         }
         return 0;// 如果没有数据，则返回0
     }
@@ -78,7 +78,7 @@ public class HistoryDao {
      */
     public int getMaxId() {
         db = helper.getWritableDatabase();// 初始化SQLiteDatabase对象
-        Cursor cursor = db.rawQuery("select max(_id) from history", null);// 获取收入信息表中的最大编号
+        Cursor cursor = db.rawQuery("select max(id) from history", null);// 获取收入信息表中的最大编号
         while (cursor.moveToLast()) {// 访问Cursor中的最后一条数据
             return cursor.getInt(0);// 获取访问到的数据，即最大编号
         }

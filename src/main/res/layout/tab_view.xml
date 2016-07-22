@@ -23,5 +23,5 @@
         android:gravity="center_horizontal|bottom"
         android:padding="2dp"
         android:textColor="@color/tab_text_selector"
-        android:textSize="12sp" />
+        android:textSize="16dp" />
 </LinearLayout>

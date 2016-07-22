@@ -5,8 +5,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.util.Log;
 
+import com.asd.tianwang.dao.HistoryDao;
 import com.asd.tianwang.dao.ResourceDao;
+import com.asd.tianwang.dao.table.Tbhistory;
 import com.asd.tianwang.dao.table.Tbresource;
 import com.asd.tianwang.depend.BaseFragment;
 import com.asd.tianwang.depend.IconPagerAdapter;
@@ -18,21 +21,25 @@ import com.asd.tianwang.fragment.Fragment3;
 import com.asd.tianwang.fragment.Fragment4;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends Activity {
     private StaticViewPager mViewPager;
     private IconTabPageIndicator mIndicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initdatabase();
         initViews();
-
+        new Thread(new GetDatath()).start();
 
 
     }
+
     private void initViews() {
         mViewPager = (StaticViewPager) findViewById(R.id.view_pager);
         mIndicator = (IconTabPageIndicator) findViewById(R.id.indicator);
@@ -97,18 +104,61 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void initdatabase(){
-        ResourceDao redao=new ResourceDao(MainActivity.this);
-        if(redao.getCount()<2){
-            float inp=4.0f,outp=3.1f,opsp=2.8f,inf=10.5f,outf=9.0f,backf=1.2f;
-            int orp=-12;
-            List<Tbresource> lire=new ArrayList<Tbresource>();
-            for(int i=0;i<36;i++){
-                lire.add(new Tbresource(i,inp,outp,opsp,inf,outf,backf,orp));
+    public void initdatabase() {
+        ResourceDao redao = new ResourceDao(MainActivity.this);
+        if (redao.getCount() < 2) {
+            float inp = 4.0f, outp = 3.1f, opsp = 2.8f, inf = 10.5f, outf = 9.0f, backf = 1.2f;
+            int orp = -12;
+            List<Tbresource> lire = new ArrayList<Tbresource>();
+            for (int i = 0; i < 36; i++) {
+                lire.add(new Tbresource(i, inp, outp, opsp, inf, outf, backf, orp));
                 redao.add(lire.get(i));
-                inp=inp+0.1f;outp=outp+0.1f;opsp=opsp+0.1f;
-                outf=outf-0.1f;backf=backf+0.1f;orp=orp-3;
+                inp = inp + 0.1f;
+                outp = outp + 0.1f;
+                opsp = opsp + 0.1f;
+                outf = outf - 0.1f;
+                backf = backf + 0.1f;
+                orp = orp - 3;
             }
         }
+    }
+
+    public class GetDatath implements Runnable {
+
+        @Override
+        public void run() {
+            ResourceDao resourceDao = new ResourceDao(MainActivity.this);
+            HistoryDao historyDao = new HistoryDao(MainActivity.this);
+            Random ra = new Random();
+
+            while (true) {
+              String a[] = getTime();
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Tbresource tbr = resourceDao.find(ra.nextInt(35));
+                Tbhistory tbh = new Tbhistory(historyDao.getCount(), tbr.getInp(), tbr.getOutp(), tbr.getOpsp(),
+                        tbr.getInf(), tbr.getOutf(), tbr.getBackf(), tbr.getOrp(), a[0], a[1]);
+                historyDao.add(tbh);
+                Log.i("id,time",historyDao.getCount()+","+a[0]);
+
+            }
+        }
+    }
+
+    public String[] getTime() {
+        String[] a = new String[2];
+        Calendar c = Calendar.getInstance();
+        String year = String.valueOf(c.get(Calendar.YEAR));
+        String month = String.valueOf(c.get(Calendar.MONTH) + 1);
+        String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+        String hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
+        String mins = String.valueOf(c.get(Calendar.MINUTE));
+        String sec = String.valueOf(c.get(Calendar.SECOND));
+        a[0] = hour + ":" + mins + ":" + sec;
+        a[1] = year + "-" + month + "-" + day;
+        return a;
     }
 }
