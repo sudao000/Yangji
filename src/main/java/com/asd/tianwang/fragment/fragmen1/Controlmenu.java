@@ -32,6 +32,7 @@ public class Controlmenu extends DialogFragment {
     @Override
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        //getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         AlertDialog.Builder builder=new AlertDialog.Builder((getActivity()));
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.control_menu,null);

@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import com.asd.tianwang.R;
 import com.asd.tianwang.depend.BaseFragment;
 import com.asd.tianwang.depend.TabAdapter;
-import com.asd.tianwang.fragment.fragmen1.Frag1;
-import com.asd.tianwang.fragment.fragmen1.Frag2;
-import com.asd.tianwang.fragment.fragmen1.Frag3;
-import com.asd.tianwang.fragment.fragmen1.Frag4;
+import com.asd.tianwang.fragment.fragmen1.OneFrag1;
+import com.asd.tianwang.fragment.fragmen1.OneFrag2;
+import com.asd.tianwang.fragment.fragmen1.OneFrag3;
+import com.asd.tianwang.fragment.fragmen1.OneFrag4;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Fragment1 extends BaseFragment{
     private TabAdapter fAdapter;
     private List<Fragment> list_fs;
     private List<String> list_title;
-    private Frag1 f1;private Frag2 f2;private Frag3 f3;private Frag4 f4;
+    private OneFrag1 f1;private OneFrag2 f2;private OneFrag3 f3;private OneFrag4 f4;
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fram1, container, false);
@@ -39,7 +39,7 @@ public class Fragment1 extends BaseFragment{
     public void initControls(View view){
         tabtitle=(TabLayout)view.findViewById(R.id.tabtitle);
         vpcontent=(ViewPager)view.findViewById(R.id.vp_content);
-        f1=new Frag1();f2=new Frag2();f3=new Frag3();f4=new Frag4();
+        f1=new OneFrag1();f2=new OneFrag2();f3=new OneFrag3();f4=new OneFrag4();
         list_fs=new ArrayList<>();
         list_fs.add(f1); list_fs.add(f2); list_fs.add(f3); list_fs.add(f4);
         list_title=new ArrayList<>();

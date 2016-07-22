@@ -55,6 +55,25 @@ public class HistoryDao {
         }
       return  tbhistories;
     }
+    public Tbhistory find(int id){
+        db=helper.getWritableDatabase();
+        Cursor cursor=db.rawQuery("select * from history where id=?",new String[]{String.valueOf(id)});
+        if (cursor.moveToNext()){
+            return new Tbhistory(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getFloat(cursor.getColumnIndex("inp")),
+                    cursor.getFloat(cursor.getColumnIndex("outp")),
+                    cursor.getFloat(cursor.getColumnIndex("opsp")),
+                    cursor.getFloat(cursor.getColumnIndex("inf")),
+                    cursor.getFloat(cursor.getColumnIndex("outf")),
+                    cursor.getFloat(cursor.getColumnIndex("backf")),
+                    cursor.getInt(cursor.getColumnIndex("orp")),
+                    cursor.getString(cursor.getColumnIndex("mtime")),
+                    cursor.getString(cursor.getColumnIndex("mdate"))
+            );
+        }
+        return null;
+    }
     /**
      * 获取总记录数
      *

@@ -1,4 +1,4 @@
-package com.asd.tianwang.fragment.fragmen1;
+package com.asd.tianwang.fragment.fragment2;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import com.asd.tianwang.R;
 /**
  * Created by ASD on 2016/7/20.
  */
-public class Frag4  extends Fragment{
+public class TwoFrag3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lfra4, null, false);
+        View view = inflater.inflate(R.layout.twof3, null, false);
         return view;
     }
 }

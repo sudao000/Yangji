@@ -14,11 +14,11 @@ import com.asd.tianwang.R;
 /**
  * Created by ASD on 2016/7/20.
  */
-public class Frag1 extends Fragment{
+public class OneFrag1 extends Fragment{
     private TextView txac;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.lfra1, null, false);
+        final View view = inflater.inflate(R.layout.onef1, null, false);
         Button contral=(Button)view.findViewById(R.id.bt_cto);
         txac=(TextView)view.findViewById(R.id.tx_acc);
         contral.setOnClickListener(new View.OnClickListener() {

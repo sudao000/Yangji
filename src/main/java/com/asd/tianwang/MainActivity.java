@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initdatabase();
         initViews();
-        new Thread(new GetDatath()).start();
+        //new Thread(new GetDatath()).start();
 
 
     }

@@ -12,10 +12,10 @@ import com.asd.tianwang.R;
 /**
  * Created by ASD on 2016/7/20.
  */
-public class Frag3 extends Fragment {
+public class OneFrag3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lfra3, null, false);
+        View view = inflater.inflate(R.layout.onef3, null, false);
         return view;
     }
 }
