@@ -31,6 +31,7 @@ import java.util.ArrayList;
  * Created by ASD on 2016/7/20.
  */
 public class TwoFrag2 extends Fragment {
+
     private BarChart mBarchart;
     private BarData mBardata;
     private ArrayList<String> xVals;
@@ -48,7 +49,7 @@ public class TwoFrag2 extends Fragment {
                 mBarchart.invalidate();
                 String s=msg.arg1+"";
                 tx.setText(s);
-                Log.i("mbchart", "执行handler");
+              //  Log.i("mbchart", "执行handler");
             }
         }
     };
@@ -57,8 +58,9 @@ public class TwoFrag2 extends Fragment {
         View view = inflater.inflate(R.layout.twof2, null, false);
         mBarchart = (BarChart) view.findViewById(R.id.barchart);
         tx=(TextView)view.findViewById(R.id.tx_01);
+
         initbar();
-        new Thread(new MyThread()).start();
+       // new Thread(new MyThread()).start();
         return view;
     }
 

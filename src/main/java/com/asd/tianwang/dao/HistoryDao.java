@@ -3,7 +3,6 @@ package com.asd.tianwang.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.asd.tianwang.dao.table.Tbhistory;
 
@@ -37,7 +36,7 @@ public class HistoryDao {
         List<Tbhistory> tbhistories=new ArrayList<Tbhistory>();
         db=helper.getWritableDatabase();
         Cursor cursor=db.rawQuery("select * from history where mdate=?",new String[]{date});
-        while (cursor.moveToNext()){Log.i("测试cursor",1+"");
+        while (cursor.moveToNext()){
             tbhistories.add( new Tbhistory(
                     cursor.getInt(cursor.getColumnIndex("id")),
                     cursor.getFloat(cursor.getColumnIndex("inp")),
