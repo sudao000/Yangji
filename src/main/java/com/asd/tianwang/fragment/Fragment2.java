@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -185,14 +184,15 @@ public class Fragment2 extends BaseFragment {
     }
 
     private void sure() {
-        lineY21.clear();
+        if(!date.getText().toString().equals(""))
+        { lineY21.clear();
         lineY22.clear();
         lineY23.clear();
         barY21.clear();
         barY22.clear();
         barY23.clear();
         xVals2.clear();
-        barX2.clear();
+        barX2.clear();}
         //每次都清空一下数据，不然会存储很多。
         HistoryDao historyDao = new HistoryDao(getActivity());
         List<Tbhistory> his = historyDao.find(date.getText().toString());
@@ -234,8 +234,6 @@ public class Fragment2 extends BaseFragment {
 
     private void initline() {
         datanow = new Thread(new MyThread());
-
-
         dataSets = new ArrayList<ILineDataSet>();
         dataSets2 = new ArrayList<ILineDataSet>();
         xVals = new ArrayList<String>();
@@ -362,7 +360,7 @@ public class Fragment2 extends BaseFragment {
                 xVals.add(tbh.getMtime());
                 barX1.add(tbh.getMtime());
                 //Log.i("m", m + "");
-                Log.i("barX:",barY1.get(m).toString());
+               // Log.i("barX:",barY1.get(m).toString());
                 Message msg = handler.obtainMessage();
                 msg.what = 0x0104;
                 msg.arg1 = m;
