@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initdatabase();
         initViews();
-        //new Thread(new GetDatath()).start();
+       // new Thread(new GetDatath()).start();
 
 
     }
@@ -130,11 +130,11 @@ public class MainActivity extends Activity {
             ResourceDao resourceDao = new ResourceDao(MainActivity.this);
             HistoryDao historyDao = new HistoryDao(MainActivity.this);
             Random ra = new Random();
-
-            while (true) {
-              String a[] = getTime();
+            int m = 0;
+            while (m<10) {
+                String a[] = getTime();
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -142,8 +142,8 @@ public class MainActivity extends Activity {
                 Tbhistory tbh = new Tbhistory(historyDao.getCount(), tbr.getInp(), tbr.getOutp(), tbr.getOpsp(),
                         tbr.getInf(), tbr.getOutf(), tbr.getBackf(), tbr.getOrp(), a[0], a[1]);
                 historyDao.add(tbh);
-                Log.i("id,time",historyDao.getCount()+","+a[0]);
-
+                Log.i("id,time", historyDao.getCount() + "," + a[0]);
+                m++;
             }
         }
     }

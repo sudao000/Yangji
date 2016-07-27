@@ -1,4 +1,4 @@
-package com.asd.tianwang.fragment.fragment2;
+package com.asd.tianwang.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
