@@ -4,14 +4,14 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="FL1"
         android:id="@+id/tx_acc"
     android:layout_gravity="center_horizontal"
         android:layout_marginLeft="150dp"
-        android:layout_marginTop="150dp" />
+        android:layout_marginTop="150dp"
+        android:background="@drawable/greencircle" />
 
     <Button
         android:layout_width="wrap_content"
@@ -23,4 +23,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="182dp" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/tx_acc"
+        android:layout_marginTop="69dp"
+        android:background="@drawable/redcircle" />
+
 </RelativeLayout>

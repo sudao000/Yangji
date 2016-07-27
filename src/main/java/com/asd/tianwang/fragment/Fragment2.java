@@ -270,11 +270,13 @@ public class Fragment2 extends BaseFragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置X轴标签位于图标下边。
         xAxis.setDrawGridLines(false);//不画网格线
         xAxis.setSpaceBetweenLabels(2);
+        xAxis.setAxisLineColor(Color.BLACK);
         //xAxis.setLabelsToSkip(0);//忽略的标签数
         leftAxis = mLinechart.getAxisLeft();// 获得左侧侧坐标轴
         leftAxis.setAxisMaxValue(9f);
         leftAxis.setAxisMinValue(2f);
         leftAxis.setDrawGridLines(false);
+        leftAxis.setAxisLineColor(Color.BLACK);
 
         LimitLine yLimitLine = new LimitLine(6.8f, "进水压力上限：6.8");
         // yLimitLine.
@@ -322,12 +324,14 @@ public class Fragment2 extends BaseFragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置X轴标签位于图标下边。
         xAxis.setDrawGridLines(false);//不画网格线
         xAxis.setSpaceBetweenLabels(2);
+        xAxis.setAxisLineColor(Color.BLACK);
 
         //xAxis.setLabelsToSkip(0);//忽略的标签数
         yleftAxis = mBarchart.getAxisLeft();// 获得左侧侧坐标轴
         yleftAxis.setAxisMaxValue(12f);
         yleftAxis.setAxisMinValue(0f);
         yleftAxis.setDrawGridLines(false);
+        yleftAxis.setAxisLineColor(Color.BLACK);
         LimitLine yLimitLine = new LimitLine(5f, "最低产水:5");
         yLimitLine.setLineColor(Color.BLUE);
         yLimitLine.setTextColor(Color.BLACK);
