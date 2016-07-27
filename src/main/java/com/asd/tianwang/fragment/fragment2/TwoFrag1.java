@@ -47,7 +47,7 @@ public class TwoFrag1 extends Fragment {
     private ArrayList<Entry> yValues1, yValues2, yValues3, yValues21, yValues22, yValues23;
     private YAxis leftAxis;
     private TextView tx;
-    private EditText date, limit,txtest;
+    private EditText date, limit;
     Thread datanow;
     private Handler handler2 = new Handler() {
         @Override
@@ -154,11 +154,12 @@ public class TwoFrag1 extends Fragment {
                 xVals2.add(his.get(i).getMtime());
                // Log.i("yValues",yValues21.get(i).toString()+","+xVals2.get(i));
             }
-            Message msg = handler2.obtainMessage();
-            msg.what = 0x0103;
-            msg.arg1 = xVals2.size();
-            handler2.sendMessage(msg);
+
         }
+        Message msg = handler2.obtainMessage();
+        msg.what = 0x0103;
+        msg.arg1 = xVals2.size();
+        handler2.sendMessage(msg);
     }
 
     private void initline(View view) {
@@ -166,7 +167,6 @@ public class TwoFrag1 extends Fragment {
         mLinechart = (LineChart) view.findViewById(R.id.linechart);
         tx = (TextView) view.findViewById(R.id.tx_02);
         date = (EditText) view.findViewById(R.id.et_date);
-        txtest = (EditText) view.findViewById(R.id.et_test);
         bt_sure = (Button) view.findViewById(R.id.bt_sure);
         limit = (EditText) view.findViewById(R.id.et_limit);
         rl = (RelativeLayout) view.findViewById(R.id.rl01);
