@@ -10,7 +10,7 @@ import com.asd.tianwang.dao.table.Tbresource;
  * Created by ASD on 2016/7/19.
  */
 public class ResourceDao {
-    private DBOpenHelper helper;
+   private DBOpenHelper helper;
     private SQLiteDatabase db;
     public ResourceDao(Context context){ helper=new DBOpenHelper(context);  }
     /**

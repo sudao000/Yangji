@@ -39,11 +39,11 @@ public class Fragment1 extends BaseFragment{
     public void initControls(View view){
         tabtitle=(TabLayout)view.findViewById(R.id.tabtitle);
         vpcontent=(ViewPager)view.findViewById(R.id.vp_content);
-        f1=new OneFrag1();f2=new OneFrag2();f3=new OneFrag3();f4=new OneFrag4();
+        f1=new OneFrag1();/*f2=new OneFrag2();*/f3=new OneFrag3();f4=new OneFrag4();
         list_fs=new ArrayList<>();
-        list_fs.add(f1); list_fs.add(f2); list_fs.add(f3); list_fs.add(f4);
+        list_fs.add(f1); /*list_fs.add(f2);*/ list_fs.add(f3); list_fs.add(f4);
         list_title=new ArrayList<>();
-        list_title.add("运行状况");list_title.add("输入输出");
+        list_title.add("运行状况");/*list_title.add("输入输出");*/
         list_title.add("报警信息");list_title.add("备用");
         //设置TabLayout模式
         tabtitle.setTabMode(TabLayout.MODE_FIXED);

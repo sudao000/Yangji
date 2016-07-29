@@ -18,4 +18,5 @@ public class Fragment3 extends BaseFragment{
         View view = inflater.inflate(R.layout.fram3, null, false);
         return view;
     }
+
 }

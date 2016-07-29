@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="确定"
-        android:id="@+id/bt_sure"
+        android:id="@+id/bt_qd"
         android:layout_marginLeft="150dp"
         android:background="#dd52c588"
         android:textSize="22dp"
@@ -101,7 +101,7 @@
         android:alpha="0.8"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:layout_below="@+id/bt_sure"
+        android:layout_below="@+id/bt_qd"
         android:layout_marginTop="10dp" />
 
     <FrameLayout
@@ -160,7 +160,7 @@
         android:alpha="0.8"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:layout_toEndOf="@+id/bt_sure"
+        android:layout_toEndOf="@+id/bt_qd"
         android:layout_alignBottom="@+id/bt_now" />
 
 

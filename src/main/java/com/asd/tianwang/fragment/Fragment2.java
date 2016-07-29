@@ -157,7 +157,7 @@ public class Fragment2 extends BaseFragment {
                 return false;
             }
         }); //设置RelativeLayout可获取焦点，用于点击屏幕其他区域使文本编辑框失去焦点。*/
-        datanow.start();
+       // datanow.start();
         update();
         return view;
     }
@@ -221,7 +221,7 @@ public class Fragment2 extends BaseFragment {
         mLinechart = (LineChart) view.findViewById(R.id.linechart);
         tx = (TextView) view.findViewById(R.id.tx_02);
         bt_now = (Button) view.findViewById(R.id.bt_now);
-        bt_sure = (Button) view.findViewById(R.id.bt_sure);
+        bt_sure = (Button) view.findViewById(R.id.bt_qd);
         bt_change = (Button) view.findViewById(R.id.bt_change);
         linelimit = (EditText) view.findViewById(R.id.et_linelimit);
         barlimit=(EditText) view.findViewById(R.id.et_barlimit);
@@ -370,7 +370,7 @@ public class Fragment2 extends BaseFragment {
                 msg.arg1 = m;
                 handler.sendMessage(msg);
                 m = xVals.size();//一开始用m++,但切换到其他页面在切换回来 m值会乱跳不知为何，目前这样解决了
-                //m值乱跳问题，但切回来后线程休眠时间仍会错乱，不是5秒，会少于5秒原因未知。
+                //m值乱跳问题，但切回来后线程休眠时间仍会错乱，不是3秒，会少于3秒原因未知。
             }
 
         }

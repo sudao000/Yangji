@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.util.Log;
 
+import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.HistoryDao;
 import com.asd.tianwang.dao.ResourceDao;
+import com.asd.tianwang.dao.SetDao;
 import com.asd.tianwang.dao.table.Tbhistory;
 import com.asd.tianwang.dao.table.Tbresource;
+import com.asd.tianwang.dao.table.Tbset;
 import com.asd.tianwang.depend.BaseFragment;
 import com.asd.tianwang.depend.IconPagerAdapter;
 import com.asd.tianwang.depend.IconTabPageIndicator;
@@ -35,7 +38,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initdatabase();
         initViews();
-       // new Thread(new GetDatath()).start();
+        //new Thread(new GetDatath()).start();
+        new Thread(new RunThread()).start();
+        new Thread(new InThread()).start();
 
 
     }
@@ -106,6 +111,7 @@ public class MainActivity extends Activity {
 
     public void initdatabase() {
         ResourceDao redao = new ResourceDao(MainActivity.this);
+        SetDao setDao = new SetDao(MainActivity.this);
         if (redao.getCount() < 2) {
             float inp = 4.0f, outp = 3.1f, opsp = 2.8f, inf = 10.5f, outf = 9.0f, backf = 1.2f;
             int orp = -12;
@@ -120,7 +126,10 @@ public class MainActivity extends Activity {
                 backf = backf + 0.1f;
                 orp = orp - 3;
             }
+
         }
+        /*Tbset tbset = new Tbset(20, 10, 10, 10);
+        setDao.add(tbset);*/
     }
 
     public class GetDatath implements Runnable {
@@ -131,7 +140,7 @@ public class MainActivity extends Activity {
             HistoryDao historyDao = new HistoryDao(MainActivity.this);
             Random ra = new Random();
             int m = 0;
-            while (m<10) {
+            while (m < 10) {
                 String a[] = getTime();
                 try {
                     Thread.sleep(500);
@@ -160,5 +169,65 @@ public class MainActivity extends Activity {
         a[0] = hour + ":" + mins + ":" + sec;
         a[1] = year + "-" + month + "-" + day;
         return a;
+    }
+
+    public class RunThread implements Runnable {
+        @Override
+        public void run() {
+            SetDao sd = new SetDao(MainActivity.this);
+            while (true) {
+                if (Digital.isrun) {
+                    setDo(0);
+                    Tbset ts = sd.find();
+                    try {
+                        Thread.sleep(ts.cycle * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    setDo(1);
+                    try {
+                        Thread.sleep(ts.qx * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    setDo(2);
+                    try {
+                        Thread.sleep(ts.qiy * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    setDo(3);
+                    try {
+                        Thread.sleep(ts.fx * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    setDo(0);
+
+                }else {Digital.out=5;}
+            }
+        }
+    }
+
+    public class InThread implements Runnable {
+        @Override
+        public void run() {
+            Random r = new Random();
+            while (true) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Digital.in = r.nextInt(8);
+                Digital.an = r.nextInt(35);
+            }
+        }
+    }
+    public void setDo(int i){
+        if(Digital.isrun){
+            Digital.out=i;
+        }
+        else Digital.out=5;
     }
 }

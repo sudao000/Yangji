@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#a567ddd7">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="启动"
-        android:id="@+id/button"
+        android:id="@+id/bt_start"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="271dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="60dp" />
+        android:layout_marginStart="25dp"
+        android:background="#1db249"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/bt_stop"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="停止"
-        android:id="@+id/button2"
-        android:layout_alignBottom="@+id/button"
-        android:layout_toEndOf="@+id/button" />
+        android:id="@+id/bt_stop"
+        android:layout_marginStart="75dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/bt_start"
+        android:background="#b20720"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="手动反洗"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:layout_marginTop="47dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="故障复位"
-        android:id="@+id/button4"
-        android:layout_alignTop="@+id/button3"
-        android:layout_alignStart="@+id/button2" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/bt_start"></LinearLayout>
 </RelativeLayout>

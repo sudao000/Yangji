@@ -18,4 +18,5 @@ public class OneFrag3 extends Fragment {
         View view = inflater.inflate(R.layout.onef3, null, false);
         return view;
     }
+
 }
