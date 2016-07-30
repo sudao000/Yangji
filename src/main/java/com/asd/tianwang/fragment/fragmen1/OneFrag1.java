@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.asd.tianwang.R;
 import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.ResourceDao;
+import com.asd.tianwang.dao.WarnDao;
 import com.asd.tianwang.dao.table.Tbresource;
 
 import java.math.BigDecimal;
@@ -164,6 +165,7 @@ public class OneFrag1 extends Fragment {
     class MyThread implements Runnable {
         @Override
         public void run() {
+            WarnDao warnDao=new WarnDao(getActivity());
             while (true) {
                 try {
                     Thread.sleep(1000);
@@ -172,9 +174,11 @@ public class OneFrag1 extends Fragment {
                 }
                 Message msg = handler.obtainMessage(0x1100);
                 handler.sendMessage(msg);
+
             }
         }
     }
+
 
 }
 

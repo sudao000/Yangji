@@ -3,6 +3,7 @@ package com.asd.tianwang.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.asd.tianwang.dao.table.Tbhistory;
 
@@ -28,6 +29,28 @@ public class HistoryDao {
                         ,tbhistory.getInf(),tbhistory.getOutf(),tbhistory.getBackf(),tbhistory.getOrp()
                         ,tbhistory.getMtime(),tbhistory.getMdate()
                 });
+    }
+    public  List<Tbhistory> findAll(){
+        List<Tbhistory> tbhistories=new ArrayList<Tbhistory>();
+        db=helper.getWritableDatabase();
+        Cursor cursor=db.rawQuery("select * from history",null);
+        while (cursor.moveToNext()){
+            tbhistories.add( new Tbhistory(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getFloat(cursor.getColumnIndex("inp")),
+                    cursor.getFloat(cursor.getColumnIndex("outp")),
+                    cursor.getFloat(cursor.getColumnIndex("opsp")),
+                    cursor.getFloat(cursor.getColumnIndex("inf")),
+                    cursor.getFloat(cursor.getColumnIndex("outf")),
+                    cursor.getFloat(cursor.getColumnIndex("backf")),
+                    cursor.getInt(cursor.getColumnIndex("orp")),
+                    cursor.getString(cursor.getColumnIndex("mtime")),
+                    cursor.getString(cursor.getColumnIndex("mdate")))
+
+            );
+
+        }
+        return  tbhistories;
     }
     /**
      * 查找数据信息
@@ -73,6 +96,7 @@ public class HistoryDao {
         }
         return null;
     }
+
     /**
      * 获取总记录数
      *
@@ -86,6 +110,7 @@ public class HistoryDao {
         {
             return cursor.getInt(0);// 返回总记录数
         }
+        Log.i("hisgetcuont",cursor.getInt(0)+"");
         return 0;// 如果没有数据，则返回0
     }
 
@@ -108,6 +133,10 @@ public class HistoryDao {
     public void deleteAll(){
         db = helper.getWritableDatabase();
         db.execSQL("delete from history");
+    }
+    public void remove(String date){
+        db = helper.getWritableDatabase();
+        db.execSQL("delete  from history where mdate=?",new String[]{date});
     }
 
 }

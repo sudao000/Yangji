@@ -1,14 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/rl_100"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="F4"
+        android:text="删除警告："
         android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="160dp"
+        android:textSize="20dp"
+        android:textColor="#000000" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_warn"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_toEndOf="@+id/textView"
+        android:hint="选择日期"
+        android:textSize="20dp"
+        android:paddingBottom="3dp"
+        android:textColor="#000000" />
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="确定"
+        android:id="@+id/bt_warn"
+        android:layout_toEndOf="@+id/et_warn"
+        android:background="#13a529"
+        android:textSize="20dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="20dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_his"
+        android:hint="选择日期"
+        android:textSize="20dp"
+        android:paddingBottom="3dp"
+        android:textColor="#000000"
+        android:layout_alignBottom="@+id/bt_his"
+        android:layout_toStartOf="@+id/bt_warn" />
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="确定"
+        android:id="@+id/bt_his"
+        android:background="#13a529"
+        android:textSize="20dp"
+        android:layout_marginTop="39dp"
+        android:layout_below="@+id/bt_warn"
+        android:layout_alignStart="@+id/bt_warn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="删除历史："
+        android:id="@+id/textView53"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:layout_alignBottom="@+id/et_his"
+        android:layout_alignStart="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="生成历史："
+        android:id="@+id/textView54"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:layout_below="@+id/et_his"
+        android:layout_toStartOf="@+id/et_his"
+        android:layout_marginTop="39dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_makehis"
+        android:hint="选择日期"
+        android:textSize="20dp"
+        android:paddingBottom="3dp"
+        android:textColor="#000000"
+        android:layout_alignTop="@+id/textView54"
+        android:layout_toEndOf="@+id/textView54" />
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="确定"
+        android:id="@+id/bt_makehis"
+        android:background="#13a529"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/et_makehis"
+        android:layout_alignStart="@+id/bt_his" />
 </RelativeLayout>

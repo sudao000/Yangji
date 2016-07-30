@@ -22,9 +22,9 @@ public class WarnDao {
 
     public void add(Tbwarn tw) {
         db=helper.getWritableDatabase();
-        db.execSQL("insert into warn (id,type,mtime,mdate) values (?,?,?,?,?)",
+        db.execSQL("insert into warn (id,type,mtime,mdate) values (?,?,?,?)",
                 new Object[]{
-                        tw.id,tw.type,tw.mtime,tw.mtime
+                        tw.id,tw.type,tw.mtime,tw.mdate
                 });
 
     }
@@ -50,7 +50,7 @@ public class WarnDao {
     public int getCount() {
         db = helper.getWritableDatabase();// 初始化SQLiteDatabase对象
         Cursor cursor = db
-                .rawQuery("select count(id) from history", null);// 获取收入信息的记录数
+                .rawQuery("select count(id) from warn", null);// 获取收入信息的记录数
         if (cursor.moveToNext())// 判断Cursor中是否有数据
         {
             return cursor.getInt(0);// 返回总记录数
@@ -65,7 +65,7 @@ public class WarnDao {
      */
     public int getMaxId() {
         db = helper.getWritableDatabase();// 初始化SQLiteDatabase对象
-        Cursor cursor = db.rawQuery("select max(id) from wran", null);// 获取收入信息表中的最大编号
+        Cursor cursor = db.rawQuery("select max(id) from warn", null);// 获取收入信息表中的最大编号
         while (cursor.moveToLast()) {// 访问Cursor中的最后一条数据
             return cursor.getInt(0);// 获取访问到的数据，即最大编号
         }
@@ -76,7 +76,10 @@ public class WarnDao {
      **/
     public void deleteAll(){
         db = helper.getWritableDatabase();
-        db.execSQL("delete from wran");
+        db.execSQL("delete from warn");
     }
-
+    public void remove(String date){
+        db = helper.getWritableDatabase();
+        db.execSQL("delete  from warn where mdate=?",new String[]{date});
+    }
 }

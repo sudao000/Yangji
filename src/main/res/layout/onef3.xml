@@ -3,4 +3,40 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:id="@+id/lv_warn"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_time1"
+        android:layout_below="@+id/lv_warn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:hint="选择日期" />
+
+    <Button
+        android:layout_width="63dp"
+        android:layout_height="40dp"
+        android:text="当天"
+        android:id="@+id/bt_now1"
+        android:layout_below="@+id/et_time1"
+        android:layout_toStartOf="@+id/et_time1"
+        android:layout_marginTop="20dp"
+        android:background="#2eb4a2"
+        android:textSize="20dp" />
+
+    <Button
+        android:layout_width="63dp"
+        android:layout_height="40dp"
+        android:text="确定"
+        android:id="@+id/bt_sure1"
+        android:layout_alignBottom="@+id/bt_now1"
+        android:layout_toEndOf="@+id/et_time1"
+        android:background="#2eb4a2"
+        android:textSize="20dp" />
 </RelativeLayout>

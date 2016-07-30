@@ -15,8 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.asd.tianwang.R;
+import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.HistoryDao;
+import com.asd.tianwang.dao.ResourceDao;
 import com.asd.tianwang.dao.table.Tbhistory;
+import com.asd.tianwang.dao.table.Tbresource;
 import com.asd.tianwang.depend.BaseFragment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -85,6 +88,8 @@ public class Fragment2 extends BaseFragment {
                 leftAxis.removeAllLimitLines();
                 float lim = Float.parseFloat(linelimit.getText().toString());
                 LimitLine yLimitLine = new LimitLine(lim, "进水压力上限:" + lim);
+                Digital.limit1=lim;
+
                 // yLimitLine.
                 yLimitLine.setLineColor(Color.RED);
                 yLimitLine.setTextColor(Color.RED);
@@ -94,6 +99,8 @@ public class Fragment2 extends BaseFragment {
             if (!barlimit.getText().toString().equals("")) {
                 yleftAxis.removeAllLimitLines();
                 float lim = Float.parseFloat(barlimit.getText().toString());
+                Digital.limit1=lim;
+
                 LimitLine yLimitLine = new LimitLine(lim, "最低产水:" + lim);
                 yLimitLine.setLineColor(Color.BLUE);
                 yLimitLine.setTextColor(Color.BLUE);
@@ -157,7 +164,7 @@ public class Fragment2 extends BaseFragment {
                 return false;
             }
         }); //设置RelativeLayout可获取焦点，用于点击屏幕其他区域使文本编辑框失去焦点。*/
-       // datanow.start();
+        datanow.start();
         update();
         return view;
     }
@@ -184,6 +191,7 @@ public class Fragment2 extends BaseFragment {
     }
 
     private void sure() {
+        Digital.ischange=true;
         if(!date.getText().toString().equals(""))
         { lineY21.clear();
         lineY22.clear();
@@ -347,32 +355,34 @@ public class Fragment2 extends BaseFragment {
         @Override
         public void run() {
             int m = 0;
-            HistoryDao historyDao = new HistoryDao(getActivity());
-            while (m < 10) {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Tbhistory tbh = historyDao.find(m);
-                lineY1.add(new Entry(tbh.getInp(), xVals.size()));
-                lineY2.add(new Entry(tbh.getOutp(), xVals.size()));
-                lineY3.add(new Entry(tbh.getOpsp(), xVals.size()));
-                barY1.add(new BarEntry(tbh.getInf(), barX1.size()));
-                barY2.add(new BarEntry(tbh.getOutf(), barX1.size()));
-                barY3.add(new BarEntry(tbh.getBackf(), barX1.size()));
-                xVals.add(tbh.getMtime());
-                barX1.add(tbh.getMtime());
-                //Log.i("m", m + "");
-               // Log.i("barX:",barY1.get(m).toString());
-                Message msg = handler.obtainMessage();
-                msg.what = 0x0104;
-                msg.arg1 = m;
-                handler.sendMessage(msg);
-                m = xVals.size();//一开始用m++,但切换到其他页面在切换回来 m值会乱跳不知为何，目前这样解决了
-                //m值乱跳问题，但切回来后线程休眠时间仍会错乱，不是3秒，会少于3秒原因未知。
-            }
+            ResourceDao resourceDao = new ResourceDao(getActivity());
+            while (true) {
 
+                if (Digital.out==0) {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String a[]=Digital.getTime();
+                    Tbresource tbresource = resourceDao.find(Digital.an);
+                    lineY1.add(new Entry(tbresource.getInp(), xVals.size()));
+                    lineY2.add(new Entry(tbresource.getOutp(), xVals.size()));
+                    lineY3.add(new Entry(tbresource.getOpsp(), xVals.size()));
+                    barY1.add(new BarEntry(tbresource.getInf(), barX1.size()));
+                    barY2.add(new BarEntry(tbresource.getOutf(), barX1.size()));
+                    barY3.add(new BarEntry(tbresource.getBackf(), barX1.size()));
+                    xVals.add(a[0]);
+                    barX1.add(a[0]);
+                    Message msg = handler.obtainMessage();
+                    msg.what = 0x0104;
+                    msg.arg1 = m;
+                    handler.sendMessage(msg);
+                    m = xVals.size();
+                    //一开始用m++,但切换到其他页面在切换回来 m值会乱跳不知为何，目前这样解决了
+                    //m值乱跳问题，但切回来后线程休眠时间仍会错乱，不是3秒，会少于3秒原因未知。
+                }
+            }
         }
     }
 
@@ -426,5 +436,6 @@ public class Fragment2 extends BaseFragment {
         return dataSet;
 
     }
+
 
 }

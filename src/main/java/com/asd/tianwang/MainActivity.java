@@ -11,9 +11,11 @@ import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.HistoryDao;
 import com.asd.tianwang.dao.ResourceDao;
 import com.asd.tianwang.dao.SetDao;
+import com.asd.tianwang.dao.WarnDao;
 import com.asd.tianwang.dao.table.Tbhistory;
 import com.asd.tianwang.dao.table.Tbresource;
 import com.asd.tianwang.dao.table.Tbset;
+import com.asd.tianwang.dao.table.Tbwarn;
 import com.asd.tianwang.depend.BaseFragment;
 import com.asd.tianwang.depend.IconPagerAdapter;
 import com.asd.tianwang.depend.IconTabPageIndicator;
@@ -24,7 +26,6 @@ import com.asd.tianwang.fragment.Fragment3;
 import com.asd.tianwang.fragment.Fragment4;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -38,7 +39,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initdatabase();
         initViews();
-        //new Thread(new GetDatath()).start();
         new Thread(new RunThread()).start();
         new Thread(new InThread()).start();
 
@@ -52,6 +52,8 @@ public class MainActivity extends Activity {
         FragmentAdapter adapter = new FragmentAdapter(fragments, getFragmentManager());
         mViewPager.setAdapter(adapter);
         mIndicator.setViewPager(mViewPager);
+        Digital.limit1 = 6;
+        Digital.limit2 = 5;
     }
 
     private List<BaseFragment> initFragments() {
@@ -132,44 +134,8 @@ public class MainActivity extends Activity {
         setDao.add(tbset);*/
     }
 
-    public class GetDatath implements Runnable {
 
-        @Override
-        public void run() {
-            ResourceDao resourceDao = new ResourceDao(MainActivity.this);
-            HistoryDao historyDao = new HistoryDao(MainActivity.this);
-            Random ra = new Random();
-            int m = 0;
-            while (m < 10) {
-                String a[] = getTime();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Tbresource tbr = resourceDao.find(ra.nextInt(35));
-                Tbhistory tbh = new Tbhistory(historyDao.getCount(), tbr.getInp(), tbr.getOutp(), tbr.getOpsp(),
-                        tbr.getInf(), tbr.getOutf(), tbr.getBackf(), tbr.getOrp(), a[0], a[1]);
-                historyDao.add(tbh);
-                Log.i("id,time", historyDao.getCount() + "," + a[0]);
-                m++;
-            }
-        }
-    }
 
-    public String[] getTime() {
-        String[] a = new String[2];
-        Calendar c = Calendar.getInstance();
-        String year = String.valueOf(c.get(Calendar.YEAR));
-        String month = String.valueOf(c.get(Calendar.MONTH) + 1);
-        String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
-        String hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
-        String mins = String.valueOf(c.get(Calendar.MINUTE));
-        String sec = String.valueOf(c.get(Calendar.SECOND));
-        a[0] = hour + ":" + mins + ":" + sec;
-        a[1] = year + "-" + month + "-" + day;
-        return a;
-    }
 
     public class RunThread implements Runnable {
         @Override
@@ -204,30 +170,79 @@ public class MainActivity extends Activity {
                     }
                     setDo(0);
 
-                }else {Digital.out=5;}
+                } else {
+                    Digital.out = 5;
+                }
             }
         }
     }
 
     public class InThread implements Runnable {
+
         @Override
         public void run() {
+            ResourceDao resourceDao = new ResourceDao(MainActivity.this);
+            HistoryDao historyDao = new HistoryDao(MainActivity.this);
+            WarnDao warnDao = new WarnDao(MainActivity.this);
             Random r = new Random();
+            updatewarn(historyDao,warnDao);
             while (true) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (Digital.out == 0) {
+                    String a[] = Digital.getTime();
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Digital.in = r.nextInt(8);
+                    Digital.an = r.nextInt(35);
+                    Tbresource tbr = resourceDao.find(Digital.an);
+                    Tbhistory tbh = new Tbhistory(historyDao.getCount(), tbr.getInp(), tbr.getOutp(), tbr.getOpsp(),
+                            tbr.getInf(), tbr.getOutf(), tbr.getBackf(), tbr.getOrp(), a[0], a[1]);
+                    historyDao.add(tbh);
+                    if (Digital.ischange) {
+                        updatewarn(historyDao, warnDao);
+                    }
+                    if (tbr.getInp() > Digital.limit1) {
+                        Tbwarn tbwarn = new Tbwarn(warnDao.getCount(), 0, a[0], a[1]);
+                        warnDao.add(tbwarn);
+                    }
+                    if (tbr.getOutf() < Digital.limit2) {
+                        Tbwarn tbwarn = new Tbwarn(warnDao.getCount(), 1, a[0], a[1]);
+                        warnDao.add(tbwarn);
+                    }
                 }
-                Digital.in = r.nextInt(8);
-                Digital.an = r.nextInt(35);
             }
         }
     }
-    public void setDo(int i){
-        if(Digital.isrun){
-            Digital.out=i;
+
+    public void setDo(int i) {
+        if (Digital.isrun) {
+            Digital.out = i;
+        } else Digital.out = 5;
+    }
+
+    public void updatewarn(HistoryDao h, WarnDao w) {
+        w.deleteAll();
+        List<Tbhistory> listh = new ArrayList<>();
+        listh = h.findAll();
+
+       /* Log.i("Digital.limit1",Digital.limit1+"");
+        Log.i("Digital.limit2",Digital.limit2+"");
+        Log.i("Digital.ischange0",Digital.ischange+"");*/
+        Digital.ischange=false;
+        for (int i = 0; i < listh.size(); i++) {
+            Tbhistory tbh = listh.get(i);
+            if (tbh.getInp() > Digital.limit1) {
+                Tbwarn tbwarn = new Tbwarn(w.getCount(), 0, tbh.getMtime(), tbh.getMdate());
+                w.add(tbwarn);
+
+            }
+            if (tbh.getOutf() < Digital.limit2) {
+                Tbwarn tbwarn = new Tbwarn(w.getCount(), 1, tbh.getMtime(), tbh.getMdate());
+                w.add(tbwarn);
+
+            }
         }
-        else Digital.out=5;
     }
 }

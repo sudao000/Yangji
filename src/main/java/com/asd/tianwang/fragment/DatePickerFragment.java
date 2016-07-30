@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
@@ -35,7 +34,7 @@ public class DatePickerFragment extends DialogFragment
         int y=c.get(Calendar.YEAR);
         int m=c.get(Calendar.MONTH);
         int day=c.get(Calendar.DAY_OF_MONTH);
-        Log.i("onCreateDialog",y+"-"+m+"-"+day);
+       // Log.i("onCreateDialog",y+"-"+m+"-"+day);
         return new DatePickerDialog(getActivity(),this,y,m,day);
 
     }
@@ -45,7 +44,7 @@ public class DatePickerFragment extends DialogFragment
         this.month=monthOfYear+1;
         this.day=dayOfMonth;
        ostm.acceptTime(year,monthOfYear+1,dayOfMonth);
-        Log.i("timeset:","year="+this.year+",month="+this.month+",day="+this.day);
+       // Log.i("timeset:","year="+this.year+",month="+this.month+",day="+this.day);
 
     }
 
