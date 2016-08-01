@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.HistoryDao;
@@ -226,12 +225,12 @@ public class MainActivity extends Activity {
         w.deleteAll();
         List<Tbhistory> listh = new ArrayList<>();
         listh = h.findAll();
-
+        int length=listh.size();
        /* Log.i("Digital.limit1",Digital.limit1+"");
         Log.i("Digital.limit2",Digital.limit2+"");
         Log.i("Digital.ischange0",Digital.ischange+"");*/
         Digital.ischange=false;
-        for (int i = 0; i < listh.size(); i++) {
+        for (int i = 0; i < length; i++) {
             Tbhistory tbh = listh.get(i);
             if (tbh.getInp() > Digital.limit1) {
                 Tbwarn tbwarn = new Tbwarn(w.getCount(), 0, tbh.getMtime(), tbh.getMdate());

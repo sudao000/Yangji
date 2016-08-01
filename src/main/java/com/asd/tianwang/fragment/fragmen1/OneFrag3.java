@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +45,8 @@ public class OneFrag3 extends Fragment {
             if (msg.what == 0x1200) {
 
                 lv.setAdapter(arrayAdapter);
-
                 lv.setOnScrollListener(mScrolllitener);
-                lv.onRestoreInstanceState(state);
+                lv.onRestoreInstanceState(state);//记录滑动位置，防止每次重设adapter引起的lv回到顶部。
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -128,7 +126,7 @@ public class OneFrag3 extends Fragment {
                         Message msg = handler.obtainMessage(0x1200);
                         handler.sendMessage(msg);
                     }
-                    Log.i("0000","执行run");
+                   // Log.i("0000","执行run");
                 }
             }
         }
