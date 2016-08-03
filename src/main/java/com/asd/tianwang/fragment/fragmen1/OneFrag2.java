@@ -46,7 +46,7 @@ public class OneFrag2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.onef2, null, false);
         init(view);
-        new Thread(new MyThread()).start();
+       // new Thread(new MyThread()).start();
         return view;
     }
 

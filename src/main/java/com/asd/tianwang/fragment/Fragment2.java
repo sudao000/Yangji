@@ -164,7 +164,7 @@ public class Fragment2 extends BaseFragment {
                 return false;
             }
         }); //设置RelativeLayout可获取焦点，用于点击屏幕其他区域使文本编辑框失去焦点。*/
-        datanow.start();
+        //datanow.start();
         update();
         return view;
     }

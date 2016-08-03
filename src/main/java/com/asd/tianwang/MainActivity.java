@@ -38,8 +38,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initdatabase();
         initViews();
-        new Thread(new RunThread()).start();
-        new Thread(new InThread()).start();
+        //new Thread(new RunThread()).start();
+        //new Thread(new InThread()).start();
 
 
     }
@@ -134,8 +134,6 @@ public class MainActivity extends Activity {
     }
 
 
-
-
     public class RunThread implements Runnable {
         @Override
         public void run() {
@@ -184,7 +182,7 @@ public class MainActivity extends Activity {
             HistoryDao historyDao = new HistoryDao(MainActivity.this);
             WarnDao warnDao = new WarnDao(MainActivity.this);
             Random r = new Random();
-            updatewarn(historyDao,warnDao);
+            updatewarn(historyDao, warnDao);
             while (true) {
                 if (Digital.out == 0) {
                     String a[] = Digital.getTime();
@@ -225,11 +223,11 @@ public class MainActivity extends Activity {
         w.deleteAll();
         List<Tbhistory> listh = new ArrayList<>();
         listh = h.findAll();
-        int length=listh.size();
+        int length = listh.size();
        /* Log.i("Digital.limit1",Digital.limit1+"");
         Log.i("Digital.limit2",Digital.limit2+"");
         Log.i("Digital.ischange0",Digital.ischange+"");*/
-        Digital.ischange=false;
+        Digital.ischange = false;
         for (int i = 0; i < length; i++) {
             Tbhistory tbh = listh.get(i);
             if (tbh.getInp() > Digital.limit1) {

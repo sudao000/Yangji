@@ -23,8 +23,9 @@ public class DBOpenHelper extends SQLiteOpenHelper{
         db.execSQL("create table setting(id integer primary key,cycle int,qx_time int,qy_time int," +
                 "fx_time int)");   //创建设置表
         db.execSQL("create table warn(id integer primary key,type int," +
-                "mtime varchar(20),mdate varchar(20))"
-        );
+                "mtime varchar(20),mdate varchar(20))");
+        db.execSQL("create table yhis(id integer primary key,con decimal(2,2)," +
+                "pre decimal(2,2),level decimal(2,2),mtime varchar(20),mdate varchar(20))");
     }
     @Override   //覆写基类的onUpgrade方法，以便数据库版本更新
     public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion){

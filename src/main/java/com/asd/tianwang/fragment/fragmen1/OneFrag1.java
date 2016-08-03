@@ -50,7 +50,7 @@ public class OneFrag1 extends Fragment {
                 showContral(view);
             }
         });
-        new Thread(new MyThread()).start();
+        // new Thread(new MyThread()).start();
         return view;
     }
 

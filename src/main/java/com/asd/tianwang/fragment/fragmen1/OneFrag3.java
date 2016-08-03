@@ -92,7 +92,7 @@ public class OneFrag3 extends Fragment {
                 dateDialog.show(getFragmentManager(), "dateDialog");
             }
         });
-        new Thread(new InThread()).start();
+        //new Thread(new InThread()).start();
         return view;
     }
 
