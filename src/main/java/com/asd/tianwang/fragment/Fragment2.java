@@ -228,7 +228,7 @@ public class Fragment2 extends BaseFragment {
         mBarchart = (BarChart) view.findViewById(R.id.barchart);
         mLinechart = (LineChart) view.findViewById(R.id.linechart);
         tx = (TextView) view.findViewById(R.id.tx_02);
-        bt_now = (Button) view.findViewById(R.id.bt_now);
+        bt_now = (Button) view.findViewById(R.id.bt_now2);
         bt_sure = (Button) view.findViewById(R.id.bt_qd);
         bt_change = (Button) view.findViewById(R.id.bt_change);
         linelimit = (EditText) view.findViewById(R.id.et_linelimit);

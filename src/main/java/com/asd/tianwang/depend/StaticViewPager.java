@@ -19,8 +19,8 @@ public class StaticViewPager extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev){
         return false;
     }
-    @Override
+   /* @Override
     public void setCurrentItem(int item){
         this.setCurrentItem(item);
-    }
+    }*/
 }

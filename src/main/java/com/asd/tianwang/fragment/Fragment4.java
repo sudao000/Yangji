@@ -17,11 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asd.tianwang.R;
+import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.HistoryDao;
 import com.asd.tianwang.dao.ResourceDao;
 import com.asd.tianwang.dao.WarnDao;
+import com.asd.tianwang.dao.YhisDao;
 import com.asd.tianwang.dao.table.Tbhistory;
 import com.asd.tianwang.dao.table.Tbresource;
+import com.asd.tianwang.dao.table.Tbyhis;
 import com.asd.tianwang.depend.BaseFragment;
 
 import java.io.BufferedWriter;
@@ -55,6 +58,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     Thread receiverThread;
     private Timer timer = null;
     private MyTask task = null;
+    private YhisDao yhisDao;
 
     private class MyHandler extends Handler {
         @Override
@@ -64,11 +68,16 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 bt_con.setText("断开");
             }
             if (msg.what == 2) {
-                //timer.scheduleAtFixedRate(task, 3000, 3000);
+               // timer.scheduleAtFixedRate(task, 3000, 3000);
             }
             receiverData(msg.what);
             if (msg.what == 1) {
                 String result = msg.getData().get("msg").toString();
+                String[] a=result.split(",");
+                String[] b= Digital.getTime();
+                Tbyhis tbyhis=new Tbyhis(yhisDao.getCount(), Float.parseFloat(a[1]),
+                        Float.parseFloat(a[2]),Float.parseFloat(a[3]),b[0],"2016-8-2");
+                yhisDao.add(tbyhis);
                 tv_act.setText(result);
                 Log.i("result", result);
             }
@@ -116,6 +125,8 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         et_makehis.setOnClickListener(this);
         timer = new Timer();
         task = new MyTask();
+        yhisDao=new YhisDao(getActivity());
+
     }
 
     @Override
@@ -202,7 +213,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
             }
             inDatas = new byte[count];
             in.read(inDatas);
-            return new String(inDatas, "gbk");//使用gb2312方式对接收的字符流数据编码
+            return new String(inDatas, "gbk");//使用gbk方式对接收的字符流数据编码
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -338,9 +349,9 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         @Override
         public void run() {
 
-            if (printWriter != null) {
-                printWriter.write("测试定时");
-                printWriter.flush();
+                if (printWriter != null) {
+                    printWriter.write("000"+"\n");
+                    printWriter.flush();
             }
         }
     }

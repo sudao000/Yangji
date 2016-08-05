@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl000">
+    <com.asd.tianwang.depend.StaticViewPager
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/vp_data">
+    </com.asd.tianwang.depend.StaticViewPager>
+    <android.support.design.widget.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:id="@+id/cv_title"
+        android:layout_below="@+id/vp_data"
+        android:background="@color/titleBlue"
+        app:tabIndicatorColor="@color/titleBlue"
+        app:tabSelectedTextColor="@color/yellow"
+        app:tabTextColor="@color/biaoti">
+
+    </android.support.design.widget.TabLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="限制线："
+        android:id="@+id/textView57"
+        android:layout_below="@+id/cv_title"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:textSize="20dp"
+        android:textColor="#000000" />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/et_limit0"
+        android:layout_alignBottom="@+id/textView57"
+        android:background="#c25b9bb4"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:hint="00.0"
+        android:layout_toRightOf="@+id/textView57"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:id="@+id/bt_limit0"
+        android:layout_alignBottom="@+id/et_limit0"
+        android:layout_toEndOf="@+id/et_limit0"
+        android:layout_marginStart="39dp"
+        android:background="#d77aa0bf"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/et_limit0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="日期："
+        android:id="@+id/textView58"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:layout_below="@+id/textView57"
+        android:layout_toStartOf="@+id/et_limit0"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_time0"
+        android:layout_toEndOf="@+id/textView58"
+        android:background="#c25b9bb4"
+        android:layout_alignBottom="@+id/textView58"
+        android:hint="2016-1-1"
+        android:focusable="false"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:id="@+id/bt_time0"
+        android:background="#d77aa0bf"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/et_time0"
+        android:layout_alignStart="@+id/bt_limit0"
+        android:layout_alignTop="@+id/et_time0" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="实时"
+        android:id="@+id/bt_now2"
+        android:background="#d77aa0bf"
+        android:textSize="20dp"
+        android:layout_below="@+id/et_time0"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp" />
+
+</RelativeLayout>

@@ -28,7 +28,8 @@
         android:textColor="#000000"
         android:background="#ae51bcb3"
         android:layout_alignTop="@+id/textView"
-        android:layout_alignStart="@+id/et_his" />
+        android:layout_alignStart="@+id/et_his"
+        android:focusable="false" />
 
     <Button
         android:layout_width="60dp"
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/et_his"
         android:hint="选择日期"
+        android:focusable="false"
         android:textSize="20dp"
         android:textColor="#000000"
         android:background="#ae51bcb3"
@@ -92,6 +94,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/et_makehis"
         android:hint="选择日期"
+        android:focusable="false"
         android:textSize="20dp"
         android:textColor="#000000"
         android:background="#ae51bcb3"

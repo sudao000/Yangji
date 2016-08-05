@@ -19,8 +19,8 @@ import com.asd.tianwang.depend.BaseFragment;
 import com.asd.tianwang.depend.IconPagerAdapter;
 import com.asd.tianwang.depend.IconTabPageIndicator;
 import com.asd.tianwang.depend.StaticViewPager;
+import com.asd.tianwang.fragment.Frag2;
 import com.asd.tianwang.fragment.Fragment1;
-import com.asd.tianwang.fragment.Fragment2;
 import com.asd.tianwang.fragment.Fragment3;
 import com.asd.tianwang.fragment.Fragment4;
 
@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
         userFragment.setIconId(R.drawable.tab_run);
         fragments.add(userFragment);
 
-        Fragment2 noteFragment = new Fragment2();
+        Frag2 noteFragment = new Frag2();
         noteFragment.setTitle("数据记录");
         noteFragment.setIconId(R.drawable.tab_data);
         fragments.add(noteFragment);
