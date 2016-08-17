@@ -17,7 +17,7 @@ import java.util.List;
  * Created by ASD on 2016/8/4.
  */
 public class LvAdapter extends BaseAdapter {
-    private List<Tbyhis> data;
+    public List<Tbyhis> data;
     private Context context;
     private LayoutInflater layoutInflater;
 
@@ -53,6 +53,7 @@ public class LvAdapter extends BaseAdapter {
         } else {
             convertView = layoutInflater.inflate(R.layout.lvitem2, null);
         }
+        String a[]=tbyhis.mdate.split("-");
         viewHolder = new ViewHolder();
         viewHolder.txid = (TextView) convertView.findViewById(R.id.tw_id);
         viewHolder.txcon = (TextView) convertView.findViewById(R.id.tw_con);
@@ -65,7 +66,7 @@ public class LvAdapter extends BaseAdapter {
         viewHolder.txpre.setText(tbyhis.pre + "");
         viewHolder.txlev.setText(tbyhis.level + "");
         viewHolder.txtime.setText(tbyhis.mtime);
-        viewHolder.txdate.setText(tbyhis.mdate);
+        viewHolder.txdate.setText(a[1]+"-"+a[2]);
         if (tbyhis.con > 13) {
             viewHolder.txcon.setTextColor(Color.parseColor("#EB523B"));
         }

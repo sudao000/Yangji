@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.asd.tianwang.MessageEvent;
 import com.asd.tianwang.R;
+import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.YhisDao;
 import com.asd.tianwang.dao.table.Tbyhis;
 import com.github.mikephil.charting.charts.LineChart;
@@ -32,7 +33,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -46,35 +46,55 @@ public class Twof2 extends Fragment {
     private ArrayList<Entry> lineY1, lineY2;
     private YAxis leftAxis;
     private YhisDao yhisDao;
-    private Timer timer = null;
     private MyTask task = null;
     private MessageEvent mevent;
     private boolean isnow;
-    private Handler handler=new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what==1001&&isnow){
+            if (msg.what == 1001 && isnow) {
                 //实时图表
                 mLinechart.setData(mLinedata2);
                 mLinechart.setVisibleXRangeMaximum(6);//设置X轴最多显示数据7个
                 mLinechart.moveViewToX(mLinedata2.getXValCount() - 1);//设置折线移动
             }
+            if (msg.what == 1002) {
+                sure(mevent.time);
+                mLinechart.setData(mLinedata);
+                mLinechart.fitScreen();
+                mLinechart.setVisibleXRangeMaximum(6);//设置X轴最多显示数据7个
+                mLinechart.moveViewToX(mLinedata2.getXValCount() - 1);//设置折线移动
+            }
+            if (msg.what == 1003) {
+                leftAxis.removeAllLimitLines();
+                float lim = Float.parseFloat(mevent.limit);
+                LimitLine yLimitLine = new LimitLine(lim, "电导率上限:" + lim);
+                // yLimitLine.
+                yLimitLine.setLineColor(Color.RED);
+                yLimitLine.setTextColor(Color.RED);
+                yLimitLine.setTextSize(8f);
+                leftAxis.addLimitLine(yLimitLine);
+            }
             mLinechart.notifyDataSetChanged();
             mLinechart.invalidate();
-            }
-            //接收并显示信息在接收窗口
+        }
+        //接收并显示信息在接收窗口
     };
+
     @Override
-    public  void onStart(){
+    public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
+
     @Override
-    public void onStop(){
+    public void onStop() {
+        task.cancel();
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.twof2, null, false);
@@ -82,43 +102,44 @@ public class Twof2 extends Fragment {
         initline();
         return view;
     }
+
     @Subscribe
-    public void onEventMainThread(MessageEvent event){
-        mevent=event;
-
-        if (mevent.islimit&&!mevent.limit.equals("")) {
-            leftAxis.removeAllLimitLines();
-            float lim = Float.parseFloat(mevent.limit);
-            LimitLine yLimitLine = new LimitLine(lim, "电导率上限:" + lim);
-            // yLimitLine.
-            yLimitLine.setLineColor(Color.RED);
-            yLimitLine.setTextColor(Color.RED);
-            yLimitLine.setTextSize(8f);
-            leftAxis.addLimitLine(yLimitLine);
-            Toast.makeText(getActivity(), "限制线修改成功！", Toast.LENGTH_SHORT).show();
+    public void onEventMainThread(MessageEvent event) {
+        mevent = event;
+        if (getUserVisibleHint()) {
+            if (mevent.islimit && !mevent.limit.equals("")) {
+                handler.sendEmptyMessage(1003);
+                Toast.makeText(getActivity(), "限制线修改成功！", Toast.LENGTH_SHORT).show();
+            }
+            if (mevent.istime && !mevent.time.equals("")) {
+                isnow = false;
+                handler.sendEmptyMessage(1002);
+                Toast.makeText(getActivity(), mevent.time + "数据展示！", Toast.LENGTH_SHORT).show();
+            }
+            if (mevent.isnow) {
+                isnow = true;
+                handler.sendEmptyMessage(1001);
+                Toast.makeText(getActivity(), "实时数据展示！", Toast.LENGTH_SHORT).show();
+            }
         }
-        if(mevent.istime&&!mevent.time.equals("")){
-            isnow=false;
-            sure(mevent.time);
-            mLinechart.setData(mLinedata);
-            Toast.makeText(getActivity(), mevent.time+"数据展示！", Toast.LENGTH_SHORT).show();
-        }
-        if(mevent.isnow){
-            isnow=true;
-            handler.sendEmptyMessage(1001);
-            Toast.makeText(getActivity(),"实时数据展示！", Toast.LENGTH_SHORT).show();
-        }
-        mLinechart.notifyDataSetChanged();
-        mLinechart.invalidate();
-
     }
+
+    @Subscribe
+    public void Event2(Tbyhis tby) {
+        lineY2.add(new Entry(tby.con, xVals2.size()));
+        xVals2.add(tby.mtime);
+        if (isnow) {
+            handler.sendEmptyMessage(1001);
+        }
+    }
+
     private void init(View view) {
         mLinechart = (LineChart) view.findViewById(R.id.lc_con);
-        yhisDao=new YhisDao(getActivity());
-        timer = new Timer();
+        yhisDao = new YhisDao(getActivity());
         task = new MyTask();
-        isnow=true;
+        isnow = true;
     }
+
     private void initline() {
         xVals = new ArrayList<String>();
         xVals2 = new ArrayList<String>();
@@ -150,7 +171,6 @@ public class Twof2 extends Fragment {
         mLinechart.setScaleEnabled(false);// 是否可以缩放
         mLinechart.setPinchZoom(false);// 集双指缩放
         mLinechart.getAxisRight().setEnabled(false);// 隐藏右边的坐标轴
-        // mBarchart.getAxisLeft().setEnabled(false);// 隐藏左边的左边轴
         Legend mLegend = mLinechart.getLegend();
         mLegend.setForm(Legend.LegendForm.SQUARE);// 设置比例图标示// 设置窗体样式
         // mLegend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);设置比例图位置
@@ -163,7 +183,7 @@ public class Twof2 extends Fragment {
         xAxis.setAxisLineColor(Color.BLACK);
         //xAxis.setLabelsToSkip(0);//忽略的标签数
         leftAxis = mLinechart.getAxisLeft();// 获得左侧侧坐标轴
-        leftAxis.setAxisMaxValue(20f);
+        leftAxis.setAxisMaxValue(25f);
         leftAxis.setAxisMinValue(0f);
         leftAxis.setDrawGridLines(false);
         leftAxis.setAxisLineColor(Color.BLACK);
@@ -173,18 +193,23 @@ public class Twof2 extends Fragment {
         yLimitLine.setTextColor(Color.RED);
         yLimitLine.setTextSize(8f);
         leftAxis.addLimitLine(yLimitLine);
-        timer.scheduleAtFixedRate(task, 3000, 3000);
+        //Digital.timer.scheduleAtFixedRate(task, 3000, 3000);
+        getdata(Digital.getDate());
         mLinechart.setData(mLinedata2);
+        mLinechart.setViewPortOffsets(60, 50, 80, 110);
+        /*setViewPortOffsets(float left, float top, float right, float bottom) : 设置当前视图的偏移量（实际图表窗口的两侧偏移量）。 设置这个，将阻止图表自动计算它的偏移量。
+使用 resetViewPortOffsets() 撤消此设置。 */
         mLinechart.setBackgroundColor(Color.parseColor("#BE4C7BA4"));
         mLinechart.setVisibleXRangeMaximum(6);//设置X轴最多显示数据7个
         mLinechart.moveViewToX(mLinedata.getXValCount() - 1);//设置折线移动
 
     }
+
     private void sure(String s) {
 
         lineY1.clear();
         xVals.clear();
-        List<Tbyhis>  tbh=yhisDao.find(s);
+        List<Tbyhis> tbh = yhisDao.find(s);
         if (tbh.size() != 0) {
             for (int i = 0; i < tbh.size(); i++) {
                 lineY1.add(new Entry(tbh.get(i).con, xVals.size()));
@@ -192,17 +217,31 @@ public class Twof2 extends Fragment {
             }
         }
     }
+
+    private void getdata(String s) {
+
+        lineY2.clear();
+        xVals2.clear();
+        List<Tbyhis> tbh = yhisDao.find(s);
+        if (tbh.size() != 0) {
+            for (int i = 0; i < tbh.size(); i++) {
+                lineY2.add(new Entry(tbh.get(i).con, xVals2.size()));
+                xVals2.add(tbh.get(i).mtime);
+            }
+        }
+    }
+
     private class MyTask extends TimerTask {
 
         @Override
         public void run() {
-            if(isnow) {
+            if (isnow) {
                 Random r = new Random();
                 Tbyhis thy = yhisDao.find(r.nextInt(14));
                 lineY2.add(new Entry(thy.con, xVals2.size()));
                 xVals2.add(thy.mtime);
                 handler.sendEmptyMessage(1001);
-                Log.i("run", thy.mtime);
+                Log.i("run2", thy.mtime);
             }
         }
     }

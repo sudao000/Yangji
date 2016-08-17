@@ -75,7 +75,9 @@ public class Frag2 extends BaseFragment implements View.OnClickListener{
         fAdapter=new TabAdapter(getChildFragmentManager(),list_fs);
         fAdapter.setTabTitle(list_title);
         vpcontent.setAdapter(fAdapter);//为viewpager添加适配器
-        tabtitle.setupWithViewPager(vpcontent);//Tablayout关联viewpager
+        tabtitle.setupWithViewPager(vpcontent);
+        //Tablayout关联viewpager
+        vpcontent.setOffscreenPageLimit(4);
         bt_limit.setOnClickListener(this);
         bt_time.setOnClickListener(this);
         bt_now.setOnClickListener(this);

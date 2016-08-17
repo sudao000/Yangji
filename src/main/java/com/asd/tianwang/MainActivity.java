@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.view.WindowManager;
 
 import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.HistoryDao;
@@ -20,9 +21,9 @@ import com.asd.tianwang.depend.IconPagerAdapter;
 import com.asd.tianwang.depend.IconTabPageIndicator;
 import com.asd.tianwang.depend.StaticViewPager;
 import com.asd.tianwang.fragment.Frag2;
-import com.asd.tianwang.fragment.Fragment1;
 import com.asd.tianwang.fragment.Fragment3;
 import com.asd.tianwang.fragment.Fragment4;
+import com.asd.tianwang.fragment.fragmen1.OneFrag11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +36,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         initdatabase();
         initViews();
         //new Thread(new RunThread()).start();
         //new Thread(new InThread()).start();
-
-
     }
 
     private void initViews() {
@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     private List<BaseFragment> initFragments() {
         List<BaseFragment> fragments = new ArrayList<BaseFragment>();
 
-        Fragment1 userFragment = new Fragment1();
+        OneFrag11 userFragment = new OneFrag11();
         userFragment.setTitle("运行状态");
         userFragment.setIconId(R.drawable.tab_run);
         fragments.add(userFragment);

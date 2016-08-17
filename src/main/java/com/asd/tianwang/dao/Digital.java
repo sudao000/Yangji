@@ -1,14 +1,16 @@
 package com.asd.tianwang.dao;
 
 import java.util.Calendar;
+import java.util.Timer;
 
 /**
  * Created by ASD on 2016/7/19.
  */
 public class Digital {
-  public static int in,out,an;
+  public static int in,out,an,sbang,stsa;
   public static boolean isrun,ischange;
   public static float limit1,limit2;
+  public static Timer timer=new Timer();
   public static String[] getTime() {
     String[] a = new String[2];
     Calendar c = Calendar.getInstance();
@@ -20,6 +22,15 @@ public class Digital {
     String sec = String.valueOf(c.get(Calendar.SECOND));
     a[0] = hour + ":" + mins + ":" + sec;
     a[1] = year + "-" + month + "-" + day;
+    return a;
+  }
+  public static String getDate() {
+    String a;
+    Calendar c = Calendar.getInstance();
+    String year = String.valueOf(c.get(Calendar.YEAR));
+    String month = String.valueOf(c.get(Calendar.MONTH) + 1);
+    String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+    a = year + "-" + month + "-" + day;
     return a;
   }
   public static  int idigital[][]={

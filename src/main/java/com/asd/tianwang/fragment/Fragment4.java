@@ -27,12 +27,15 @@ import com.asd.tianwang.dao.table.Tbresource;
 import com.asd.tianwang.dao.table.Tbyhis;
 import com.asd.tianwang.depend.BaseFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.Calendar;
@@ -57,6 +60,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     private MyHandler myHandler;
     Thread receiverThread;
     private Timer timer = null;
+    private TeTask teTask = null;
     private MyTask task = null;
     private YhisDao yhisDao;
 
@@ -64,26 +68,38 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what==3){
-                bt_con.setText("断开");
-            }
             if (msg.what == 2) {
-               // timer.scheduleAtFixedRate(task, 3000, 3000);
+                 timer.scheduleAtFixedRate(task, 1000, 1000);
             }
             receiverData(msg.what);
             if (msg.what == 1) {
                 String result = msg.getData().get("msg").toString();
-                String[] a=result.split(",");
-                String[] b= Digital.getTime();
-                Tbyhis tbyhis=new Tbyhis(yhisDao.getCount(), Float.parseFloat(a[1]),
-                        Float.parseFloat(a[2]),Float.parseFloat(a[3]),b[0],"2016-8-2");
+                String[] a = result.split(",");
+                String[] b = Digital.getTime();
+                float con = changeF(Float.parseFloat(a[0]));
+                float pre = changeF(Float.parseFloat(a[1]));
+                float level = changeF(Float.parseFloat(a[2]));
+                Tbyhis tbyhis = new Tbyhis(yhisDao.getCount(), con,
+                        pre, level, b[0], b[1]);
                 yhisDao.add(tbyhis);
+                Digital.sbang = Integer.parseInt(a[3]);
+                EventBus.getDefault().post(tbyhis);
                 tv_act.setText(result);
                 Log.i("result", result);
             }
             //接收并显示信息在接收窗口
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(isConnected){
+            bt_con.setText("断开");
+        }
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,6 +115,8 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         });
         return view;
     }
+
+
 
     private void init(View view) {
         rl = (RelativeLayout) view.findViewById(R.id.rl_100);
@@ -125,8 +143,9 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         et_makehis.setOnClickListener(this);
         timer = new Timer();
         task = new MyTask();
-        yhisDao=new YhisDao(getActivity());
-
+        teTask = new TeTask();
+        yhisDao = new YhisDao(getActivity());
+        // timer.scheduleAtFixedRate(teTask, 3000, 3000);
     }
 
     @Override
@@ -139,8 +158,8 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), "删除成功！", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bt_his:
-                HistoryDao his = new HistoryDao(getActivity());
-                his.remove(et_his.getText().toString());
+               YhisDao yhisDao=new YhisDao(getActivity());
+                yhisDao.remove(et_his.getText().toString());
                 Toast.makeText(getActivity(), "删除成功！", Toast.LENGTH_SHORT).show();
             case R.id.bt_makehis:
                 makehis();
@@ -223,7 +242,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     private void receiverData(int flag) {
 
         if (flag == 2) {
-            // mTask = new ReceiverTask();
+
             receiverThread = new Thread(new MyReceiverRunnable());
             receiverThread.start();
 
@@ -231,7 +250,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
             bt_con.setText("断开");
 
             isConnected = true;
-            // mTask.execute(null);
+
         }
 
     }
@@ -239,8 +258,6 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     private class MyReceiverRunnable implements Runnable {
         public void run() {
             while (true) {
-                //Log.i(tag, "---->>client receive....");
-               //if(mSocket.isConnected()&&bt_con.getText().equals("连接")){myHandler.sendEmptyMessage(3);}
                 if (isConnected) {
                     if (mSocket != null && mSocket.isConnected()) {
                         String result = readFromInputStream(in);
@@ -269,9 +286,9 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
 
     public void sendData() {
 
-        // sendThread.start();
+        //sendThread.start();
         try {
-            String context = et_send.getText().toString()+"\n";
+            String context = et_send.getText().toString() + "\n";
             if (printWriter == null || context == null) {
                 if (printWriter == null) {
                     showInfo("连接失败!");
@@ -349,10 +366,36 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         @Override
         public void run() {
 
-                if (printWriter != null) {
-                    printWriter.write("000"+"\n");
+            if (printWriter != null) {
+                if (Digital.stsa == 1) {
+                    printWriter.write("stop" + "\n");
                     printWriter.flush();
+                    Digital.stsa = 3;
+                } else if (Digital.stsa == 2) {
+                    printWriter.write("start" + "\n");
+                    printWriter.flush();
+                    Digital.stsa = 3;
+                }
             }
+        }
+    }
+
+    private float changeF(float f) {
+        //把float转换为一位小数。
+        BigDecimal b = new BigDecimal(f);
+        float f1 = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+        return f1;
+    }
+
+    private class TeTask extends TimerTask {
+        Random r = new Random();
+
+        @Override
+        public void run() {
+            Tbyhis yh = new Tbyhis(yhisDao.getCount(), r.nextFloat() * 10, r.nextFloat() * 9, r.nextFloat() * 15,
+                    "10:44:56", "2016-8-16");
+            EventBus.getDefault().post(yh);
+
         }
     }
 }
