@@ -100,7 +100,6 @@ public class OneFrag3 extends Fragment {
         isnow = true;
         warnDao = new WarnDao(getActivity());
         bt_now = (Button) view.findViewById(R.id.bt_now1);
-        bt_sure = (Button) view.findViewById(R.id.bt_sure1);
         lv = (ListView) view.findViewById(R.id.lv_warn);
         et_time = (EditText) view.findViewById(R.id.et_time1);
         state=lv.onSaveInstanceState();

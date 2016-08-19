@@ -8,14 +8,14 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.view.WindowManager;
 
 import com.asd.tianwang.dao.Digital;
-import com.asd.tianwang.dao.HistoryDao;
 import com.asd.tianwang.dao.ResourceDao;
 import com.asd.tianwang.dao.SetDao;
 import com.asd.tianwang.dao.WarnDao;
-import com.asd.tianwang.dao.table.Tbhistory;
+import com.asd.tianwang.dao.YhisDao;
 import com.asd.tianwang.dao.table.Tbresource;
 import com.asd.tianwang.dao.table.Tbset;
 import com.asd.tianwang.dao.table.Tbwarn;
+import com.asd.tianwang.dao.table.Tbyhis;
 import com.asd.tianwang.depend.BaseFragment;
 import com.asd.tianwang.depend.IconPagerAdapter;
 import com.asd.tianwang.depend.IconTabPageIndicator;
@@ -27,7 +27,6 @@ import com.asd.tianwang.fragment.fragmen1.OneFrag11;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends Activity {
     private StaticViewPager mViewPager;
@@ -38,7 +37,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
-        initdatabase();
+       // initdatabase();
         initViews();
         //new Thread(new RunThread()).start();
         //new Thread(new InThread()).start();
@@ -51,8 +50,8 @@ public class MainActivity extends Activity {
         FragmentAdapter adapter = new FragmentAdapter(fragments, getFragmentManager());
         mViewPager.setAdapter(adapter);
         mIndicator.setViewPager(mViewPager);
-        Digital.limit1 = 6;
-        Digital.limit2 = 5;
+        Digital.limit1 = 8;
+        Digital.limit2 = 10;
     }
 
     private List<BaseFragment> initFragments() {
@@ -69,13 +68,13 @@ public class MainActivity extends Activity {
         fragments.add(noteFragment);
 
         Fragment3 contactFragment = new Fragment3();
-        contactFragment.setTitle("参数设置");
-        contactFragment.setIconId(R.drawable.tab_setting);
+        contactFragment.setTitle("报警信息");
+        contactFragment.setIconId(R.drawable.tab_menu);
         fragments.add(contactFragment);
 
         Fragment4 recordFragment = new Fragment4();
         recordFragment.setTitle("菜单");
-        recordFragment.setIconId(R.drawable.tab_menu);
+        recordFragment.setIconId(R.drawable.tab_setting);
         fragments.add(recordFragment);
 
         return fragments;
@@ -112,7 +111,7 @@ public class MainActivity extends Activity {
 
     public void initdatabase() {
         ResourceDao redao = new ResourceDao(MainActivity.this);
-        SetDao setDao = new SetDao(MainActivity.this);
+        YhisDao yhisDao=new YhisDao(MainActivity.this);
         if (redao.getCount() < 2) {
             float inp = 4.0f, outp = 3.1f, opsp = 2.8f, inf = 10.5f, outf = 9.0f, backf = 1.2f;
             int orp = -12;
@@ -129,8 +128,9 @@ public class MainActivity extends Activity {
             }
 
         }
-        /*Tbset tbset = new Tbset(20, 10, 10, 10);
-        setDao.add(tbset);*/
+       // updatewarn(yhisDao)
+
+
     }
 
 
@@ -174,44 +174,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public class InThread implements Runnable {
 
-        @Override
-        public void run() {
-            ResourceDao resourceDao = new ResourceDao(MainActivity.this);
-            HistoryDao historyDao = new HistoryDao(MainActivity.this);
-            WarnDao warnDao = new WarnDao(MainActivity.this);
-            Random r = new Random();
-            updatewarn(historyDao, warnDao);
-            while (true) {
-                if (Digital.out == 0) {
-                    String a[] = Digital.getTime();
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Digital.in = r.nextInt(8);
-                    Digital.an = r.nextInt(35);
-                    Tbresource tbr = resourceDao.find(Digital.an);
-                    Tbhistory tbh = new Tbhistory(historyDao.getCount(), tbr.getInp(), tbr.getOutp(), tbr.getOpsp(),
-                            tbr.getInf(), tbr.getOutf(), tbr.getBackf(), tbr.getOrp(), a[0], a[1]);
-                    historyDao.add(tbh);
-                    if (Digital.ischange) {
-                        updatewarn(historyDao, warnDao);
-                    }
-                    if (tbr.getInp() > Digital.limit1) {
-                        Tbwarn tbwarn = new Tbwarn(warnDao.getCount(), 0, a[0], a[1]);
-                        warnDao.add(tbwarn);
-                    }
-                    if (tbr.getOutf() < Digital.limit2) {
-                        Tbwarn tbwarn = new Tbwarn(warnDao.getCount(), 1, a[0], a[1]);
-                        warnDao.add(tbwarn);
-                    }
-                }
-            }
-        }
-    }
 
     public void setDo(int i) {
         if (Digital.isrun) {
@@ -219,27 +182,25 @@ public class MainActivity extends Activity {
         } else Digital.out = 5;
     }
 
-    public void updatewarn(HistoryDao h, WarnDao w) {
+    public void updatewarn(YhisDao h) {
+        WarnDao w=new WarnDao(MainActivity.this);
         w.deleteAll();
-        List<Tbhistory> listh = new ArrayList<>();
+        String[] b = Digital.getTime();
+        List<Tbyhis> listh = new ArrayList<>();
         listh = h.findAll();
         int length = listh.size();
-       /* Log.i("Digital.limit1",Digital.limit1+"");
-        Log.i("Digital.limit2",Digital.limit2+"");
-        Log.i("Digital.ischange0",Digital.ischange+"");*/
-        Digital.ischange = false;
         for (int i = 0; i < length; i++) {
-            Tbhistory tbh = listh.get(i);
-            if (tbh.getInp() > Digital.limit1) {
-                Tbwarn tbwarn = new Tbwarn(w.getCount(), 0, tbh.getMtime(), tbh.getMdate());
+            Tbyhis tbh = listh.get(i);
+            if (listh.get(i).pre>= Digital.limit1) {
+                Tbwarn tbwarn = new Tbwarn(w.getCount(),0,listh.get(i).mtime,listh.get(i).mdate);
                 w.add(tbwarn);
 
             }
-            if (tbh.getOutf() < Digital.limit2) {
-                Tbwarn tbwarn = new Tbwarn(w.getCount(), 1, tbh.getMtime(), tbh.getMdate());
+            if(listh.get(i).con>=Digital.limit2){
+                Tbwarn tbwarn = new Tbwarn(w.getCount(),1,listh.get(i).mtime,listh.get(i).mdate);
                 w.add(tbwarn);
-
-            }
+               }
         }
+        System.out.println("update");
     }
 }

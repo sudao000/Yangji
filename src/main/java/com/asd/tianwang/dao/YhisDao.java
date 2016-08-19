@@ -28,6 +28,23 @@ public class YhisDao {
                         tbyhis.id,tbyhis.con,tbyhis.pre,tbyhis.level,tbyhis.mtime,tbyhis.mdate
                 });
     }
+    public  List<Tbyhis> findAll(){
+        List<Tbyhis> tbyhises=new ArrayList<Tbyhis>();
+        db=helper.getWritableDatabase();
+        Cursor cursor=db.rawQuery("select * from yhis",null);
+        while (cursor.moveToNext()){
+            tbyhises.add( new Tbyhis(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getFloat(cursor.getColumnIndex("con")),
+                    cursor.getFloat(cursor.getColumnIndex("pre")),
+                    cursor.getFloat(cursor.getColumnIndex("level")),
+                    cursor.getString(cursor.getColumnIndex("mtime")),
+                    cursor.getString(cursor.getColumnIndex("mdate")))
+            );
+
+        }
+        return  tbyhises;
+    }
     public List<Tbyhis> find(String date){
         List<Tbyhis> tbyhises=new ArrayList<Tbyhis>();
         db=helper.getWritableDatabase();

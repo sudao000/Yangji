@@ -24,6 +24,7 @@ import com.asd.tianwang.dao.WarnDao;
 import com.asd.tianwang.dao.YhisDao;
 import com.asd.tianwang.dao.table.Tbhistory;
 import com.asd.tianwang.dao.table.Tbresource;
+import com.asd.tianwang.dao.table.Tbwarn;
 import com.asd.tianwang.dao.table.Tbyhis;
 import com.asd.tianwang.depend.BaseFragment;
 
@@ -63,16 +64,18 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     private TeTask teTask = null;
     private MyTask task = null;
     private YhisDao yhisDao;
+    private WarnDao warnDao;
 
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 2) {
-                 timer.scheduleAtFixedRate(task, 1000, 1000);
+                timer.scheduleAtFixedRate(task, 1000, 1000);
             }
             receiverData(msg.what);
             if (msg.what == 1) {
+
                 String result = msg.getData().get("msg").toString();
                 String[] a = result.split(",");
                 String[] b = Digital.getTime();
@@ -82,6 +85,16 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 Tbyhis tbyhis = new Tbyhis(yhisDao.getCount(), con,
                         pre, level, b[0], b[1]);
                 yhisDao.add(tbyhis);
+
+                if (pre >= Digital.limit1) {
+                   Tbwarn tbwarn = new Tbwarn(warnDao.getCount(),0,b[0],b[1]);
+                    warnDao.add(tbwarn);
+                    EventBus.getDefault().post(tbwarn);
+                }
+                if(con>=Digital.limit2){
+                    Tbwarn tbwarn = new Tbwarn(warnDao.getCount(),1,b[0],b[1]);
+                    warnDao.add(tbwarn);
+                    EventBus.getDefault().post(tbwarn);}
                 Digital.sbang = Integer.parseInt(a[3]);
                 EventBus.getDefault().post(tbyhis);
                 tv_act.setText(result);
@@ -94,7 +107,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        if(isConnected){
+        if (isConnected) {
             bt_con.setText("断开");
         }
 
@@ -115,7 +128,6 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         });
         return view;
     }
-
 
 
     private void init(View view) {
@@ -145,6 +157,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         task = new MyTask();
         teTask = new TeTask();
         yhisDao = new YhisDao(getActivity());
+        warnDao = new WarnDao(getActivity());
         // timer.scheduleAtFixedRate(teTask, 3000, 3000);
     }
 
@@ -158,7 +171,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), "删除成功！", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bt_his:
-               YhisDao yhisDao=new YhisDao(getActivity());
+                YhisDao yhisDao = new YhisDao(getActivity());
                 yhisDao.remove(et_his.getText().toString());
                 Toast.makeText(getActivity(), "删除成功！", Toast.LENGTH_SHORT).show();
             case R.id.bt_makehis:

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="序号"
+        android:id="@+id/tw_id"
+        android:layout_weight="0.7"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#03e0ef"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="报警"
+        android:id="@+id/tw_con"
+        android:layout_weight="2"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#03e0ef"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="时间"
+        android:id="@+id/tw_time"
+        android:layout_weight="1.5"
+        android:textColor="#03e0ef"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="日期"
+        android:id="@+id/tw_date"
+        android:layout_weight="1"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#03e0ef"
+        android:layout_gravity="center_vertical" />
+
+</LinearLayout>

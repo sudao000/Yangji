@@ -69,6 +69,7 @@ public class Twof3 extends Fragment {
             if (msg.what == 1003) {
                 leftAxis.removeAllLimitLines();
                 float lim = Float.parseFloat(mevent.limit);
+                Digital.limit1=lim;
                 LimitLine yLimitLine = new LimitLine(lim, "压力上限:" + lim);
                 // yLimitLine.
                 yLimitLine.setLineColor(Color.RED);
@@ -192,7 +193,7 @@ public class Twof3 extends Fragment {
         leftAxis.setDrawGridLines(false);
         leftAxis.setAxisLineColor(Color.BLACK);
 
-        LimitLine yLimitLine = new LimitLine(13f, "压力上限：13");
+        LimitLine yLimitLine = new LimitLine(8f, "压力上限：8.0");
         yLimitLine.setLineColor(Color.RED);
         yLimitLine.setTextColor(Color.RED);
         yLimitLine.setTextSize(8f);
