@@ -217,4 +217,14 @@
         android:layout_below="@+id/tv_accept"
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="检查更新"
+        android:id="@+id/bt_update"
+        android:layout_marginBottom="74dp"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/et_makehis" />
 </RelativeLayout>

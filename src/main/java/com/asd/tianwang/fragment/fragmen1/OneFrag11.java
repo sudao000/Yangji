@@ -73,8 +73,6 @@ public class OneFrag11 extends BaseFragment {
                 Digital.sbang =1;
                 handler.sendEmptyMessage(0011);
 
-
-
             }
         });
         bt_stop.setOnClickListener(new View.OnClickListener() {

@@ -17,13 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asd.tianwang.R;
+import com.asd.tianwang.Update;
 import com.asd.tianwang.dao.Digital;
-import com.asd.tianwang.dao.HistoryDao;
 import com.asd.tianwang.dao.ResourceDao;
 import com.asd.tianwang.dao.WarnDao;
 import com.asd.tianwang.dao.YhisDao;
-import com.asd.tianwang.dao.table.Tbhistory;
-import com.asd.tianwang.dao.table.Tbresource;
 import com.asd.tianwang.dao.table.Tbwarn;
 import com.asd.tianwang.dao.table.Tbyhis;
 import com.asd.tianwang.depend.BaseFragment;
@@ -65,11 +63,13 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     private MyTask task = null;
     private YhisDao yhisDao;
     private WarnDao warnDao;
+    private Button bt_update;
 
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
             if (msg.what == 2) {
                 timer.scheduleAtFixedRate(task, 1000, 1000);
             }
@@ -87,14 +87,15 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 yhisDao.add(tbyhis);
 
                 if (pre >= Digital.limit1) {
-                   Tbwarn tbwarn = new Tbwarn(warnDao.getCount(),0,b[0],b[1]);
+                    Tbwarn tbwarn = new Tbwarn(warnDao.getCount(), 0, b[0], b[1]);
                     warnDao.add(tbwarn);
                     EventBus.getDefault().post(tbwarn);
                 }
-                if(con>=Digital.limit2){
-                    Tbwarn tbwarn = new Tbwarn(warnDao.getCount(),1,b[0],b[1]);
+                if (con >= Digital.limit2) {
+                    Tbwarn tbwarn = new Tbwarn(warnDao.getCount(), 1, b[0], b[1]);
                     warnDao.add(tbwarn);
-                    EventBus.getDefault().post(tbwarn);}
+                    EventBus.getDefault().post(tbwarn);
+                }
                 Digital.sbang = Integer.parseInt(a[3]);
                 EventBus.getDefault().post(tbyhis);
                 tv_act.setText(result);
@@ -133,6 +134,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     private void init(View view) {
         rl = (RelativeLayout) view.findViewById(R.id.rl_100);
         bt_warn = (Button) view.findViewById(R.id.bt_warn);
+        bt_update= (Button) view.findViewById(R.id.bt_update);
         bt_his = (Button) view.findViewById(R.id.bt_his);
         bt_makehis = (Button) view.findViewById(R.id.bt_makehis);
         bt_con = (Button) view.findViewById(R.id.bt_con);
@@ -193,12 +195,17 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
             case R.id.bt_send:
                 sendData();
                 break;
+            case R.id.bt_update:
+                Update update=new Update(getActivity());
+                update.checkUpdate(1);
+                break;
+
         }
     }
 
     private void makehis() {
         ResourceDao resourceDao = new ResourceDao(getActivity());
-        HistoryDao historyDao = new HistoryDao(getActivity());
+        YhisDao yhisDao = new YhisDao(getActivity());
         Random ra = new Random();
         Calendar c = Calendar.getInstance();
         String mins = String.valueOf(c.get(Calendar.MINUTE));
@@ -208,12 +215,11 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         while (m < 10) {
             String sec = String.valueOf(m * 5);
             String a = hours + ":" + mins + ":" + sec;
-            Tbresource tbr = resourceDao.find(ra.nextInt(35));
-            Tbhistory tbh = new Tbhistory(historyDao.getCount(), tbr.getInp(), tbr.getOutp(), tbr.getOpsp(),
-                    tbr.getInf(), tbr.getOutf(), tbr.getBackf(),
-                    tbr.getOrp(), a, et_makehis.getText().toString());
-            historyDao.add(tbh);
-            // Log.i("id,time", historyDao.getCount() + "," + a[0]);
+            float con = changeF(ra.nextFloat() * 20);
+            float pre = changeF(ra.nextFloat() * 20);
+            float level = changeF(ra.nextFloat() * 20);
+            Tbyhis tby = new Tbyhis(yhisDao.getCount(), con, pre, level, a, et_makehis.getText().toString());
+            yhisDao.add(tby);
             m++;
         }
         Toast.makeText(getActivity(), "新增成功！", Toast.LENGTH_SHORT).show();

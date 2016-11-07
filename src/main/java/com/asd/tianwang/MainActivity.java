@@ -4,16 +4,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.view.WindowManager;
 
 import com.asd.tianwang.dao.Digital;
 import com.asd.tianwang.dao.ResourceDao;
-import com.asd.tianwang.dao.SetDao;
 import com.asd.tianwang.dao.WarnDao;
 import com.asd.tianwang.dao.YhisDao;
 import com.asd.tianwang.dao.table.Tbresource;
-import com.asd.tianwang.dao.table.Tbset;
 import com.asd.tianwang.dao.table.Tbwarn;
 import com.asd.tianwang.dao.table.Tbyhis;
 import com.asd.tianwang.depend.BaseFragment;
@@ -28,19 +28,37 @@ import com.asd.tianwang.fragment.fragmen1.OneFrag11;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends Activity {
     private StaticViewPager mViewPager;
     private IconTabPageIndicator mIndicator;
+    private Update update;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            update=new Update(MainActivity.this);
+            switch (msg.what){
+                case 0021:
+                    update.checkUpdate(0);
+                    break;
+                case 0022:
+                    update.checkUpdate(1);
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
-       // initdatabase();
+        initdatabase();
         initViews();
-        //new Thread(new RunThread()).start();
-        //new Thread(new InThread()).start();
+        handler.sendEmptyMessage(0021);
     }
 
     private void initViews() {
@@ -128,51 +146,12 @@ public class MainActivity extends Activity {
             }
 
         }
-       // updatewarn(yhisDao)
+        //updatewarn(yhisDao);
 
 
     }
 
 
-    public class RunThread implements Runnable {
-        @Override
-        public void run() {
-            SetDao sd = new SetDao(MainActivity.this);
-            while (true) {
-                if (Digital.isrun) {
-                    setDo(0);
-                    Tbset ts = sd.find();
-                    try {
-                        Thread.sleep(ts.cycle * 1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    setDo(1);
-                    try {
-                        Thread.sleep(ts.qx * 1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    setDo(2);
-                    try {
-                        Thread.sleep(ts.qiy * 1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    setDo(3);
-                    try {
-                        Thread.sleep(ts.fx * 1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    setDo(0);
-
-                } else {
-                    Digital.out = 5;
-                }
-            }
-        }
-    }
 
 
 
